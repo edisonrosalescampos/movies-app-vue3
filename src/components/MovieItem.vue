@@ -6,7 +6,6 @@
         <div class="card-body">
             <h5 class="card-title">{{ title }}</h5>
             <p class="card-text">{{ description }}</p>
-            <button class="btn btn-primary">Show details</button>
         </div>
     </div>
 </template>

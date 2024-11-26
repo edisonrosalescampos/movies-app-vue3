@@ -1,46 +1,37 @@
 <template>
-  <Header />
-  <div class="container-fluid my-3">
-    <h1 class="title">Movies App</h1>
+  <div class="container-fluid mt-3 mb-5">
+    <h1 class="title">
+      Movies App
+    </h1>
     <br/>
     <MovieList :movies="movies" />
+    <br/>
+    <Pagination />
   </div>
 </template>
 
 <script>
+import { mapState, mapActions } from 'pinia';
 import MovieList from './components/MovieList.vue';
-import Header from './components/Header.vue';
+import Pagination from './components/Pagination.vue';
+import { useMoviesStore } from './store/movies';
 
 export default {
   components: {
-    Header,
     MovieList,
+    Pagination
   },
   data() {
-    return {
-      movies: []
-    }    
+    return {}    
   },
-  async mounted() {
-    const options = {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxNmVlODNmOGMzZWM5NWJmODQ2MTFhOGJiYjJkN2IzMiIsIm5iZiI6MTczMjM4MTUxMC4yNzk3ODc4LCJzdWIiOiI2NzQyMDdmNmFjMjdmNTE2ZDlmMzRmYWEiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.6coTN4X5lb-UlvTmfZDRdVnGYkHB_M7G_FcdAcuBsfs'
-      }
-    };
-
-    await fetch('https://api.themoviedb.org/3/trending/movie/day?language=en-EU', options)
-      .then(res => res.json())
-      .then(res => {
-        // this.movies = res;
-        const { results = [] } = res;
-
-        console.log(results);
-
-        this.movies = results;
-      })
-      .catch(err => console.error(err));
+  computed: {
+    ...mapState(useMoviesStore, ["movies"])
+  },
+  methods: {
+    ...mapActions(useMoviesStore, ["fetchMovies"])
+  },
+  mounted() {
+    this.fetchMovies();
   }
 }
 </script>

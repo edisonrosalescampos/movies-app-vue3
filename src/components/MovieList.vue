@@ -20,9 +20,6 @@ export default {
     },
     props: {
         movies: Array
-    },
-    mounted() {
-        // console.log('movies', this.movies);
     }
 }
 </script>
