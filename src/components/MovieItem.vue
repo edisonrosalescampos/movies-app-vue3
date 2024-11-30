@@ -1,7 +1,7 @@
 <template>
     <div class="card movie-card">
         <div class="card-img-top-container">
-            <img :src="getImage(image)" class="card-img-top" :alt="title">
+            <img :src="imageURL" class="card-img-top" :alt="title">
         </div>        
         <div class="card-body">
             <h5 class="card-title">{{ title }}</h5>
@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import preloader from './../assets/preloader.gif'
+
 export default {
     name: "MovieItem",
     props: {
@@ -18,10 +20,19 @@ export default {
         image: String,
         description: String,     
     },
+    data: () => ({
+        imageURL: ""
+    }),
     methods: {
-        getImage(filename) {
-            return filename ? `https://image.tmdb.org/t/p/original${filename}` : "";
+        getImageURL(filename) {
+            return filename ? `https://image.tmdb.org/t/p/original${filename}` : preloader;
         }
-    },
+    },  
+    created() {
+        this.imageURL = preloader;
+    }, 
+    mounted() {
+        setTimeout(() => this.imageURL = this.getImageURL(this.image), 500);
+    }
 }
 </script>
